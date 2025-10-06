@@ -1,16 +1,11 @@
 # MentalHealthApp  
 
-✅ Ready for deployment to Vercel (frontend) + Render/Railway (backend)  
-🤖 AI-powered features using Google Gemini API  
-📊 Local sentiment analysis with automatic fallback
-
 MentalHealthApp is a comprehensive mental health application built using the MERN stack. It offers several features to help users manage their mental well-being, including cookie session login, a mood tracker, an AI therapist, a mood quiz, and anonymous sharing.
 
 ## Features
 
 ### Cookie Session Login
 - Secure user authentication using cookie sessions to maintain user login states across different sessions. So also with an unauthorised acces you can't access certain pages of the application.  
-- Note: The project uses JWT-based authentication stored in localStorage for API calls (recommended for modern deployments). Depending on configuration and environment, some code paths may reference cookie sessions — verify your environment variables and server configuration when deploying.
 
 ### Mood Tracker
 - Tracks your daily mood and logs it in the database, allowing users to monitor their mental health over time.
