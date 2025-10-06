@@ -1,0 +1,836 @@
+.wellness-container {
+  min-height: 100vh;
+  background: #0D1117;
+  position: relative;
+  padding-top: 80px;
+  overflow: hidden;
+}
+
+/* Create multiple star layers for parallax effect */
+.wellness-container::before,
+.wellness-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  animation: stars 4s linear infinite;
+  z-index: 1;
+}
+
+.wellness-container::after {
+  background-image: 
+    radial-gradient(2px 2px at 25px 35px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 45px 75px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 55px 165px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 95px 45px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 135px 85px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 165px 125px, #ffffff, rgba(0,0,0,0));
+  animation: stars 8s linear infinite;
+}
+
+/* Add a cosmic nebula effect */
+.wellness-container::before {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(76, 0, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 20% 30%, rgba(0, 247, 255, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 234, 0.1) 0%, transparent 40%);
+  filter: blur(8px);
+  opacity: 0.5;
+  z-index: 0;
+}
+
+@keyframes stars {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.wellness-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.wellness-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.wellness-header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #A5B4FC, #818CF8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(165, 180, 252, 0.5);
+}
+
+.wellness-header p {
+  font-size: 1.1rem;
+  color: #A5B4FC;
+  text-shadow: 0 0 10px rgba(165, 180, 252, 0.3);
+}
+
+.wellness-filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wellness-search,
+.wellness-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid #304C89;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  min-width: 200px;
+  background-color: white;
+  color: #1B2735;
+  transition: all 0.3s ease;
+}
+
+.wellness-search:focus,
+.wellness-select:focus {
+  outline: none;
+  border-color: #818CF8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
+.wellness-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.wellness-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 20px rgba(48, 76, 137, 0.15),
+    0 0 20px rgba(165, 180, 252, 0.1);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  border: 1px solid rgba(165, 180, 252, 0.2);
+  position: relative;
+  z-index: 3;
+}
+
+.wellness-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 8px 25px rgba(48, 76, 137, 0.25),
+    0 0 30px rgba(165, 180, 252, 0.2);
+}
+
+.wellness-card-image {
+  position: relative;
+  height: 200px;
+}
+
+.wellness-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wellness-card-difficulty {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(to right, #304C89, #818CF8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.3);
+}
+
+.wellness-card-content {
+  padding: 1.5rem;
+}
+
+.wellness-card-content h3 {
+  font-size: 1.25rem;
+  color: #1B2735;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.wellness-card-content p {
+  color: #4B5563;
+  margin-bottom: 1rem;
+}
+
+.wellness-card-benefits {
+  margin-bottom: 1rem;
+}
+
+.wellness-card-benefits h4 {
+  color: #304C89;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.wellness-card-benefits ul {
+  list-style-type: none;
+  padding-left: 0;
+  color: #4B5563;
+}
+
+.wellness-card-benefits li {
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+}
+
+.wellness-card-benefits li::before {
+  content: '✨';
+  margin-right: 0.5rem;
+  color: #818CF8;
+}
+
+.wellness-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(to right, #304C89, #818CF8);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.wellness-button:hover {
+  background: linear-gradient(to right, #3a5ca3, #8e97f9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(48, 76, 137, 0.3);
+}
+
+.wellness-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 17, 23, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+  animation: fadeIn 0.3s ease-out;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.wellness-modal {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.3s ease-out;
+  border: 1px solid #304C89;
+}
+
+.wellness-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1.5rem;
+}
+
+.wellness-modal-header h2 {
+  font-size: 1.5rem;
+  color: #1B2735;
+  font-weight: bold;
+}
+
+.wellness-modal-close {
+  color: #4B5563;
+  cursor: pointer;
+  transition: color 0.2s;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+}
+
+.wellness-modal-close:hover {
+  color: #1B2735;
+}
+
+.wellness-modal-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.wellness-modal-content {
+  color: #4B5563;
+}
+
+.wellness-modal-content h3 {
+  color: #1B2735;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.wellness-modal-content p {
+  margin-bottom: 1rem;
+}
+
+.wellness-modal-content ul {
+  list-style-type: none;
+  padding-left: 1.5rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Dark theme and common styles */
+.dark-theme {
+  background-color: #121212;
+  color: #fff;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+  background-color: rgba(18, 18, 18, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: #fff;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.bottom-nav button:hover {
+  opacity: 1;
+}
+
+/* Sleep Stories Styles */
+.sleep-course {
+  margin-bottom: 30px;
+}
+
+.course-card {
+  background: linear-gradient(45deg, #2C3E50, #3498DB);
+  border-radius: 15px;
+  padding: 20px;
+  color: white;
+}
+
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.story-card {
+  background-color: #1E1E1E;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.story-card:hover {
+  transform: scale(1.02);
+}
+
+.story-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.story-content {
+  padding: 15px;
+}
+
+.story-content h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.duration {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Relaxing Sounds Styles */
+.sounds-container {
+  margin-top: 20px;
+}
+
+.sound-card {
+  background-color: #1E1E1E;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sound-card:hover {
+  background-color: #2A2A2A;
+}
+
+.sound-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating {
+  color: #FFD700;
+  letter-spacing: 2px;
+}
+
+.sound-detail {
+  background-color: #1E1E1E;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.sound-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.tags {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.tag {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.volume-control input[type="range"] {
+  flex-grow: 1;
+  height: 4px;
+  background-color: #4A4A4A;
+  border-radius: 2px;
+  outline: none;
+}
+
+/* Breathing Exercises Styles */
+.emotions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.emotion-card {
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.emotion-card:hover {
+  transform: scale(1.02);
+}
+
+.emotion-content {
+  text-align: center;
+}
+
+.emotion-icon {
+  margin-top: 15px;
+  height: 60px;
+}
+
+.exercise-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exercise-content {
+  background-color: #1E1E1E;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 90%;
+  width: 400px;
+}
+
+.breathing-animation {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+
+/* Audio Player Styles */
+audio {
+  width: 100%;
+  height: 40px;
+  margin: 10px 0;
+}
+
+.audio-player {
+  margin: 15px 0;
+}
+
+/* Yoga Component Styles */
+.wellness-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding-top: 80px;
+}
+
+.wellness-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.wellness-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.wellness-header h1 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.wellness-header p {
+    font-size: 1.1rem;
+    color: #4a5568;
+}
+
+.wellness-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.wellness-search,
+.wellness-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    min-width: 200px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.wellness-search:focus,
+.wellness-select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.wellness-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.wellness-card {
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.wellness-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.wellness-card-image {
+    position: relative;
+    height: 200px;
+}
+
+.wellness-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wellness-card-difficulty {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #4299e1;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+}
+
+.wellness-card-content {
+    padding: 1.5rem;
+}
+
+.wellness-card-content h3 {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.wellness-card-content p {
+    color: #4a5568;
+    margin-bottom: 1rem;
+}
+
+.wellness-card-benefits {
+    margin-bottom: 1rem;
+}
+
+.wellness-card-benefits h4 {
+    color: #4299e1;
+    margin-bottom: 0.5rem;
+}
+
+.wellness-card-benefits ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #4a5568;
+}
+
+.wellness-button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #4299e1;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.wellness-button:hover {
+    background: #3182ce;
+}
+
+.wellness-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    z-index: 50;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.wellness-modal {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: scaleIn 0.3s ease-out;
+}
+
+.wellness-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.wellness-modal-header h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+}
+
+.wellness-modal-close {
+    color: #718096;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+}
+
+.wellness-modal-close:hover {
+    color: #4a5568;
+}
+
+.wellness-modal-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.wellness-modal-content {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.wellness-modal-content h3 {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.wellness-modal-content p {
+    color: #4a5568;
+}
+
+.wellness-modal-content ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #4a5568;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Add a subtle animation to the stars */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+.wellness-container::before {
+  animation: twinkle 4s ease-in-out infinite;
+} 

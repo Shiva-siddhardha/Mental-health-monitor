@@ -1,0 +1,8 @@
+This directory contains images for the sleep stories.
+
+You should add the following images:
+- mountain-lake.jpg
+- lighthouse.jpg
+- rainforest.jpg
+
+These images will be used in the SleepStories component. 
