@@ -5,6 +5,7 @@ import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../navbar/Navbar';
+import { getApiUrl } from '../../utils/api';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -19,7 +20,7 @@ const MoodTrack = () => {
 
   useEffect(() => {
     // Fetch existing mood data for the user
-    axios.get(`http://localhost:5000/api/moods/${username}`)
+    axios.get(getApiUrl(`/api/moods/${username}`))
       .then(response => setMoodData(response.data))
       .catch(error => console.error('Error fetching mood data:', error));
   }, [username]);
@@ -33,7 +34,7 @@ const MoodTrack = () => {
     setSelectedMoodIndex(index);
     setTimeout(() => {
       setMood(selectedMood);
-      axios.post(`http://localhost:5000/api/moods/${username}`, { date: selectedDate, mood: selectedMood })
+      axios.post(getApiUrl(`/api/moods/${username}`), { date: selectedDate, mood: selectedMood })
         .then(response => {
           setMoodData(prevData => [...prevData, response.data]);
           setTimeout(() => {

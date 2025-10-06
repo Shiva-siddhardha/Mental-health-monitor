@@ -23,7 +23,7 @@ export const create_journal = async (req, res) => {
         };
 
         if (req.file) {
-            journalData.coverPicture = req.file.path; // save the file path to the journal document
+            journalData.coverPicture = req.file.path.replace(/\\/g, '/'); // save normalized path
         }
 
         const journalAdded = await Journal.create(journalData);
@@ -76,9 +76,19 @@ export const update_journal = async (req, res) => {
         }
 
         // Update journal fields (only the ones provided in the request body)
-        Object.assign(journal, req.body);
+            Object.assign(journal, req.body);
 
-        await journal.save();
+            // If a file was uploaded, update the coverPicture with normalized path
+            if (req.file) {
+                journal.coverPicture = req.file.path.replace(/\\/g, '/');
+            }
+
+            // Normalize tags if sent as a comma-separated string
+            if (typeof req.body.tags === 'string') {
+                journal.tags = req.body.tags.split(',').map(t => t.trim()).filter(Boolean);
+            }
+
+            await journal.save();
         return res.status(200).json(journal);
     } catch (error) {
         return res.status(500).json({ error: error.message });

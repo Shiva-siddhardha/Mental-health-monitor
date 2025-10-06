@@ -14,9 +14,10 @@ export const userSignup = async (req, res) => {
           return res.status(409).json({ msg: 'Username or email already exists!' });
       }
       const newUser = new User(req.body);
-      if (req.file) {
-          newUser.profilePicture = req.file.path; // save the file path to the user document
-      }
+    if (req.file) {
+      const normalized = req.file.path.replace(/\\/g, '/');
+      newUser.profilePicture = normalized; // save normalized path
+    }
       await newUser.save();
       return res.status(200).json(newUser);
   } catch (error) {
@@ -40,8 +41,9 @@ export const userLogin = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Return user details and token
-    return res.status(200).json({ user });
+    // Sign a JWT token and return user details and token
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET || 'MananShreya', { expiresIn: '7d' });
+    return res.status(200).json({ user, token });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -129,7 +131,7 @@ export const updateUser = async (req, res) => {
 
       const allowedUpdates = ['name', 'email', 'bio', 'password', 'age', 'gender', 'profilePicture'];
       const updates = Object.keys(req.body);
-      if (req.file) updates.push('profilePicture');
+  if (req.file) updates.push('profilePicture');
       const isValidUpdate = updates.every(update => allowedUpdates.includes(update));
 
       if (!isValidUpdate) {
@@ -141,9 +143,9 @@ export const updateUser = async (req, res) => {
           req.body.password = await bcrypt.hash(req.body.password, salt);
       }
 
-      if (req.file) {
-          req.body.profilePicture = req.file.path;
-      }
+    if (req.file) {
+      req.body.profilePicture = req.file.path.replace(/\\/g, '/');
+    }
 
       const user = await User.findOneAndUpdate({ username }, req.body, {
           new: true,

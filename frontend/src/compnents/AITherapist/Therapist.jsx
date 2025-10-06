@@ -5,8 +5,7 @@ import Navbar from '../navbar/Navbar';
 import './Therapist.css';
 import { useMentalHealth } from '../../Mentalhealthcontext/MentalHealthContext';
 
-const API_KEY = process.env.REACT_APP_API_KEY || "AIzaSyBYSrJeiyvyS2srWTix-3MHYKAAEmnqX5w";
-const genAI = new GoogleGenerativeAI(API_KEY);
+const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 const TypingAnimation = ({ color }) => (
   <div className="item text-2xl">
@@ -18,10 +17,33 @@ const Therapist = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [apiKeyMissing, setApiKeyMissing] = useState(false);
   const chatBoxRef = useRef(null);
+  const genAIRef = useRef(null);
   const { quizResults, updateQuizResults } = useMentalHealth();
 
   useEffect(() => {
+    if (!API_KEY) {
+      setApiKeyMissing(true);
+      setMessages([{
+        sender: 'ai',
+        text: "AI therapist is unavailable because the Gemini API key is not configured. Please set REACT_APP_GEMINI_API_KEY in your environment."
+      }]);
+      return;
+    }
+
+    try {
+      genAIRef.current = new GoogleGenerativeAI(API_KEY);
+    } catch (err) {
+      console.error('Failed to initialize Generative AI client:', err);
+      setApiKeyMissing(true);
+      setMessages([{
+        sender: 'ai',
+        text: "AI therapist is unavailable due to an initialization error."
+      }]);
+      return;
+    }
+
     if (quizResults && quizResults.score !== null) {
       setMessages([{
         sender: 'ai',
@@ -50,10 +72,19 @@ const Therapist = () => {
         }]);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSend = async () => {
     if (!input.trim()) return;
+
+    if (!API_KEY || !genAIRef.current) {
+      setMessages(prevMessages => [...prevMessages, {
+        sender: 'ai',
+        text: 'AI service is not available. Please contact the administrator or configure the API key.'
+      }]);
+      return;
+    }
 
     const newMessage = { sender: 'user', text: input };
     setMessages(prevMessages => [...prevMessages, newMessage]);
@@ -61,7 +92,7 @@ const Therapist = () => {
     setLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+      const model = genAIRef.current.getGenerativeModel({ model: "gemini-2.5-pro" });
 
       let prompt;
 
@@ -86,10 +117,9 @@ const Therapist = () => {
       const response = await result.response;
       let aiMessage = await response.text();
 
-      // 🔹 Force response to 2 sentences max
-      aiMessage = aiMessage.split('. ').slice(0, 2).join('. ') + '.';
+      aiMessage = aiMessage.split('. ').slice(0, 2).join('. ');
+      if (!aiMessage.endsWith('.')) aiMessage = aiMessage + '.';
 
-      // 🔹 Format bold text
       aiMessage = aiMessage.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -99,7 +129,7 @@ const Therapist = () => {
       console.error('Error generating response:', error);
       setMessages(prevMessages => [...prevMessages, {
         sender: 'ai',
-        text: 'I ran into an issue. Could you try again?'
+        text: 'I ran into an issue generating a response. Could you try again?'
       }]);
     } finally {
       setLoading(false);
@@ -144,13 +174,14 @@ const Therapist = () => {
             value={input}
             onChange={handleInputChange}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
+            placeholder={apiKeyMissing ? "AI unavailable - API key missing" : "Type your message..."}
             className="input-field"
+            disabled={apiKeyMissing}
           />
           <button 
             onClick={handleSend} 
-            disabled={loading}
-            className={`send-button ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={loading || apiKeyMissing}
+            className={`send-button ${loading || apiKeyMissing ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             Send
           </button>

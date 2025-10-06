@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getApiUrl } from '../../utils/api';
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -44,7 +45,7 @@ const Navbar = () => {
   const confirmDelete = async () => {
     try {
       // Call the backend route to delete the user
-      await fetch(`http://localhost:5000/delete-user/${user}`, {
+      await fetch(getApiUrl(`/delete-user/${user}`), {
         method: 'DELETE',
       });
       // Perform logout after deletion

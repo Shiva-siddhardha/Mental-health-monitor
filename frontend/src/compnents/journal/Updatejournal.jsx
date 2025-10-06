@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl, getImageUrl } from '../../utils/api';
 import Navbar from '../navbar/Navbar';
 
 const UpdateJournal = () => {
@@ -18,8 +19,8 @@ const UpdateJournal = () => {
         const fetchJournal = async () => {
             try {
                 setLoading(true);
-                console.log(`Fetching journal for update from: http://localhost:5000/${username}/${id}`);
-                const response = await axios.get(`http://localhost:5000/${username}/${id}`);
+                console.log(`Fetching journal for update from: ${getApiUrl(`/${username}/${id}`)}`);
+                const response = await axios.get(getApiUrl(`/${username}/${id}`));
                 console.log('Journal data received for update:', response.data);
                 
                 if (response.status === 200) {
@@ -83,7 +84,7 @@ const UpdateJournal = () => {
 
             // Important: Send the FormData directly, don't convert it to a regular object
             const response = await axios.put(
-                `http://localhost:5000/journals/${username}/${id}`, 
+                getApiUrl(`/journals/${username}/${id}`), 
                 formData,
                 {
                     headers: {
@@ -171,7 +172,7 @@ const UpdateJournal = () => {
                                 <div className="mt-2 mb-4">
                                     <p className="text-sm text-gray-500 mb-2">Current cover image:</p>
                                     <img 
-                                        src={`http://localhost:5000/${currentCoverPicture}`} 
+                                        src={getImageUrl(currentCoverPicture)} 
                                         alt="Current cover" 
                                         className="h-40 w-auto object-cover rounded-md"
                                     />

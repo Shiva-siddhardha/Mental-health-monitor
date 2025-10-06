@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { getApiUrl, getImageUrl } from '../../utils/api';
 import defaultCoverImage from './download.jpg'; // Make sure this path is correct relative to your file structure
 import Navbar from '../navbar/Navbar';
 
@@ -13,7 +14,7 @@ const JournalDetail = () => {
     useEffect(() => {
         const fetchJournal = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/${username}/${id}`);
+                const response = await axios.get(getApiUrl(`/${username}/${id}`));
                 setJournal(response.data);
                 
                 // Analyze mood once journal data is loaded
@@ -120,7 +121,7 @@ const JournalDetail = () => {
         );
     }
 
-    const coverImage = journal.coverPicture ? `http://localhost:5000/${journal.coverPicture}` : defaultCoverImage;
+    const coverImage = journal.coverPicture ? getImageUrl(journal.coverPicture) : defaultCoverImage;
 
     // Function to get color based on mood
     const getMoodColor = () => {

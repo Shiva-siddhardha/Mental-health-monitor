@@ -4,8 +4,8 @@ import Loader from "react-js-loader";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMentalHealth } from "../../Mentalhealthcontext/MentalHealthContext";
 import Navbar from "../navbar/Navbar";
-const API_KEY = process.env.REACT_APP_API_KEY || "AIzaSyBYSrJeiyvyS2srWTix-3MHYKAAEmnqX5w";
-const genAI = new GoogleGenerativeAI(API_KEY);
+const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
+const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
 const questions = [
   "How often have you felt down, depressed, or hopeless in the past two weeks?",
@@ -109,6 +109,12 @@ const Quiz = () => {
   const handleOptionLeave = () => setHoveredOption(null);
 
   const handleSubmit = async () => {
+    // Validate API key availability before proceeding
+    if (!API_KEY || !genAI) {
+      setResult("AI analysis is currently unavailable because the Gemini API key is not configured. Please contact the site administrator.");
+      return;
+    }
+
     const calculatedScore = calculateScore();
     setScore(calculatedScore);
 
@@ -116,7 +122,7 @@ const Quiz = () => {
     setResult(null);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-pro" });
 
       const prompt = `Analyze the following mental health quiz answers and generate a short summary regarding the person's mental health and what they can do. Use points and headings, and format it neatly with paragraphs:\n\n${questions
         .map((q, i) => `${i + 1}. ${q} ${answers[i]}`)
@@ -152,6 +158,8 @@ const Quiz = () => {
     }
   };
 
+  const apiDisabled = !API_KEY;
+
   return (
     <>
       <Navbar/>
@@ -165,6 +173,13 @@ const Quiz = () => {
         >
           <div className="bg-[#1B2735] rounded-2xl shadow-xl border border-[#304C89] overflow-hidden backdrop-blur-sm p-8">
             <h1 className="text-2xl font-bold mb-6 text-center text-white">Mental Health Quiz</h1>
+
+            {apiDisabled && (
+              <div className="mb-6 p-4 bg-red-600 text-white rounded-md">
+                AI analysis is disabled because the Gemini API key is not configured. Please set REACT_APP_GEMINI_API_KEY in your environment variables to enable AI-powered analysis.
+              </div>
+            )}
+
             {questions.map((question, index) => (
               <div key={index} className="mb-4 text-white font-bold m-12">
                 <p className="mb-2 text-lg">{`${index + 1}. ${question}`}</p>
@@ -196,14 +211,14 @@ const Quiz = () => {
             <div className="text-center">
               <button
                 onClick={handleSubmit}
-                disabled={loading}
+                disabled={loading || apiDisabled}
                 className={`mt-6 px-8 py-3 rounded-full ${
                   loading 
                     ? 'bg-[#141E33] text-white' 
                     : 'bg-gradient-to-r from-[#304C89] to-[#818CF8] hover:from-[#3a5ca3] hover:to-[#8e97f9] text-white'
-                } font-bold transition-all`}
+                } font-bold transition-all ${apiDisabled ? 'opacity-60 cursor-not-allowed' : ''}`}
               >
-                {loading ? 'Processing...' : 'Submit'}
+                {loading ? 'Processing...' : apiDisabled ? 'AI Unavailable' : 'Submit'}
               </button>
             </div>
             

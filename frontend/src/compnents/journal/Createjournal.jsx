@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { getApiUrl } from '../../utils/api';
 
 const CreateJournal = () => {
   const [title, setTitle] = useState('');
@@ -23,11 +24,8 @@ const CreateJournal = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/${user}`, {
+      const response = await fetch(getApiUrl(`/${user}`), {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${user}`
-        },
         body: formData
       });
 

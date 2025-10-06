@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { getApiUrl } from '../../utils/api';
 
 const AnonymousPost = () => {
   const [title, setTitle] = useState('');
@@ -19,11 +20,10 @@ const AnonymousPost = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/createAnonymousPosts', {
+      const response = await fetch(getApiUrl('/createAnonymousPosts'), {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(postData)
       });

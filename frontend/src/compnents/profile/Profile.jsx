@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../navbar/Navbar';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import { getApiUrl, getImageUrl } from '../../utils/api';
 
 import Loader from "react-js-loader";
 import { Audio } from 'react-loader-spinner';
@@ -18,7 +19,7 @@ const Profile = () => {
     // Function to fetch user details
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/${username}/getuserdetails`);
+        const response = await axios.get(getApiUrl(`/${username}/getuserdetails`));
         // Set user details in state
         console.log(response);
         setUserDetails(response.data);
@@ -79,7 +80,7 @@ const Profile = () => {
                     <div className="relative">
                       <img
                         alt="Profile"
-                        src={userDetails.profilePicture ? `http://localhost:5000/${userDetails.profilePicture}` : defaultProfilePicture}
+                        src={userDetails.profilePicture ? getImageUrl(userDetails.profilePicture) : defaultProfilePicture}
                         className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-24 max-w-[180px]"
                       />
                     </div>

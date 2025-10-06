@@ -12,15 +12,12 @@ import upload1 from '../multer/multerConfig1.js';
 import { getJournalById } from '../controller/journal-controller.js';
 import cors from 'cors';
 
-
-router.use(cors());
-
 router.post('/signup', upload.single('profilePicture') ,userSignup);
 router.post('/login', userLogin);
 router.get('/users', getUsers);
 router.get('/:username/getuserdetails', getUserDetails);
 router.delete('/delete-user/:username', deleteUser);
-router.patch('/:username/update-user', updateUser);
+router.patch('/:username/update-user', upload.single('profilePicture'), updateUser);
 
 router.get('/anonymousPosts', getAnonymousPosts);
 router.post('/createAnonymousPosts', createAnonymousPost);
@@ -28,7 +25,7 @@ router.post('/createAnonymousPosts', createAnonymousPost);
 
 router.post ('/:username', upload1.single('coverPicture'), create_journal);
 router.get('/:username/journals', getPostsByUsername);
-router.put('/journals/:username/:id', update_journal);
+router.put('/journals/:username/:id', upload1.single('coverPicture'), update_journal);
 router.delete('/journal-delete/:username/:id', delete_journal);
 router.get('/:username/:id', getJournalById);
 
